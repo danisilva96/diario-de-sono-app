@@ -1,0 +1,22 @@
+import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { Textarea } from "@/components/ui/textarea"; import { Label } from "@/components/ui/label";
+
+export default function DiarioSonoApp() { const [registros, setRegistros] = useState([]); const [form, setForm] = useState({ data: "", inicio: "", fim: "", tipo: "", local: "", como: "", acordou: "", comportamento: "", estrategias: "", notas: "" });
+
+const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }); };
+
+const adicionarRegistro = () => { if (form.data && form.inicio && form.fim) { setRegistros([...registros, form]); setForm({ data: "", inicio: "", fim: "", tipo: "", local: "", como: "", acordou: "", comportamento: "", estrategias: "", notas: "" }); } };
+
+const calcularResumo = () => { const totalHoras = registros.reduce((acc, r) => { const inicio = new Date(1970-01-01T${r.inicio}:00); const fim = new Date(1970-01-01T${r.fim}:00); const diff = (fim - inicio) / (1000 * 60 * 60); return acc + (diff > 0 ? diff : 0); }, 0); const acordouNoite = registros.filter(r => r.tipo.toLowerCase() === "noite" && r.acordou.toLowerCase() === "sim").length; return { totalHoras: totalHoras.toFixed(1), acordouNoite }; };
+
+const { totalHoras, acordouNoite } = calcularResumo();
+
+return ( 
+
+Registrar Sono 
+
+Data 
+
+Início 
+
+Fim </ 
+
